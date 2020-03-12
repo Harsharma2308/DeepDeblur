@@ -6,7 +6,10 @@ git clone --recurse-submodules -j8 https://github.com/Harsharma2308/DeepDeblur.g
 ```
 
 ## Anaconda environment
+```
 conda create --name py37 python=3.7
+```
+
 
 
 
