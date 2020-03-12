@@ -1,0 +1,6 @@
+[submodule "DeblurGAN"]
+	path = DeblurGAN
+	url = https://github.com/Harsharma2308/DeblurGAN.git
+[submodule "DeblurGANv2"]
+	path = DeblurGANv2
+	url = https://github.com/Harsharma2308/DeblurGANv2.git
