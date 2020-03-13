@@ -4,3 +4,6 @@
 [submodule "DeblurGANv2"]
 	path = DeblurGANv2
 	url = https://github.com/Harsharma2308/DeblurGANv2.git
+[submodule "Blind-Image-Deconvolution-using-Deep-Generative-Priors"]
+	path = Blind-Image-Deconvolution-using-Deep-Generative-Priors
+	url = https://github.com/kumarhans/Blind-Image-Deconvolution-using-Deep-Generative-Priors.git
