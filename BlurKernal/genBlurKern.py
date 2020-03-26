@@ -104,7 +104,7 @@ def plotImages(Clean,Blur,kernGen,recGen):
 # Blur = cv.GaussianBlur(Clean,(11,11),0)
 # # Blur = cv.filter2D(Clean,-1,kernel)
 
-ImageIndex = range(918,932)
+ImageIndex = range(2,200)
 
 for i in ImageIndex:
     img1 = cv.imread('blurred_sharp/blurred_sharp/sharp/%d.png' % i)
