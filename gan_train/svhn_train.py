@@ -16,8 +16,12 @@ from sklearn.model_selection import train_test_split
 
 class SVHNGenerator():
     def preprocess_image(self,im):
+        
         im_resized = im.resize((self.image_size,self.image_size))
         img_arr=np.array(im_resized.copy())
+        if(not img_arr.shape==self.input_shape):  #Input images should have 32x32x3 size
+            return None
+
         return img_arr
 
 
@@ -27,8 +31,11 @@ class SVHNGenerator():
         images_path=glob(os.path.join(training_images_path, '*.png')) 
         for idx,img_path in enumerate(images_path): 
             loaded_img = Image.open(img_path)             
-            data_imgs.append(self.preprocess_image(loaded_img)) 
-        x_train,x_test=train_test_split(data_imgs,test_size=0.2)
+            preprocessed_img=self.preprocess_image(loaded_img)
+            if(preprocessed_img is not None):
+                data_imgs.append(preprocessed_img)
+        x_train,x_test=train_test_split(data_imgs,test_size=0.5)
+        embed()
         x_train,x_test=np.asarray(x_train),np.asarray(x_test)
         return (x_train,x_test) # np array of size (batch,) 
 

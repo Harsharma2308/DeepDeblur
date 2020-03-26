@@ -2,7 +2,7 @@
 
 ## Make sure to clone with submodules
 ```
-git clone --recurse-submodules -j8 https://github.com/Harsharma2308/DeepDeblur.git
+git clone --recurse-submodules https://github.com/Harsharma2308/DeepDeblur.git
 ```
 
 ## Anaconda environment
