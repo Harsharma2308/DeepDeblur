@@ -1,0 +1,4 @@
+keras
+pydot
+sklearn
+tensorflow-gpu==1.15
