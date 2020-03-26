@@ -21,7 +21,6 @@ class SVHNGenerator():
         img_arr=np.array(im_resized.copy())
         if(not img_arr.shape==self.input_shape):  #Input images should have 32x32x3 size
             return None
-
         return img_arr
 
 
@@ -35,7 +34,6 @@ class SVHNGenerator():
             if(preprocessed_img is not None):
                 data_imgs.append(preprocessed_img)
         x_train,x_test=train_test_split(data_imgs,test_size=0.5)
-        embed()
         x_train,x_test=np.asarray(x_train),np.asarray(x_test)
         return (x_train,x_test) # np array of size (batch,) 
 
