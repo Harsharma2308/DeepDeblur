@@ -5,35 +5,42 @@ from keras.models import Model
 import keras.backend as K
 from keras import initializers
 from tensorflow.python.keras.callbacks import TensorBoard
-from keras.losses import mse
+from keras.losses import mse, binary_crossentropy
 from IPython import embed
 from PIL import Image
 import os
 from keras.utils import plot_model
 from glob import glob
 from sklearn.model_selection import train_test_split
+from scipy.io import loadmat
 
 
 class SVHNGenerator():
     def preprocess_image(self,im):
-        
         im_resized = im.resize((self.image_size,self.image_size))
         img_arr=np.array(im_resized.copy())
         if(not img_arr.shape==self.input_shape):  #Input images should have 32x32x3 size
             return None
         return img_arr
 
+    def data_loader_mat(self):
+        data='train_32x32.mat'
+        data_dict=loadmat(data)
+        x_train=data_dict['X']
+        x_train=np.moveaxis(x_train, -1, 0)
+        # x_train,x_test=train_test_split(data_imgs,test_size=0.001)
+        return x_train
 
     def data_loader(self): 
         data_imgs=[]
-        training_images_path='train' 
+        training_images_path='extra' 
         images_path=glob(os.path.join(training_images_path, '*.png')) 
         for idx,img_path in enumerate(images_path): 
             loaded_img = Image.open(img_path)             
             preprocessed_img=self.preprocess_image(loaded_img)
             if(preprocessed_img is not None):
                 data_imgs.append(preprocessed_img)
-        x_train,x_test=train_test_split(data_imgs,test_size=0.5)
+        x_train,x_test=train_test_split(data_imgs,test_size=0.001)
         x_train,x_test=np.asarray(x_train),np.asarray(x_test)
         return (x_train,x_test) # np array of size (batch,) 
 
@@ -44,7 +51,7 @@ class SVHNGenerator():
         self.model = None
         self.weights_path = './model weights/svhn.h5'
         
-        self.epochs=100 #TODO answer
+        self.epochs=1000 #TODO answer
         self.batch_size=128 #TODO answer
 
     # Sampling z from P(z)
@@ -134,20 +141,21 @@ class SVHNGenerator():
 
         # VAE loss = mse_loss or xent_loss + kl_loss
         # if args.mse:
-        reconstruction_loss = mse(K.flatten(input_), K.flatten(decoder_hidden4))
-        
         # else:
         #     reconstruction_loss = binary_crossentropy(K.flatten(inputs),
         #K.flatten(outputs))
-        x_train,x_test=self.data_loader()
+        x_train=self.data_loader_mat()
         # x_train = np.reshape(x_train, [-1, image_size, image_size, 3])
         # x_test = np.reshape(x_test, [-1, image_size, image_size, 3])
         x_train = x_train.astype('float32') / 255  #normalising
-        x_test = x_test.astype('float32') / 255
+        # x_test = x_test.astype('float32') / 255
         
         # embed()
         #loss
+        # reconstruction_loss = mse(K.flatten(input_), K.flatten(decoder_hidden4))
+        reconstruction_loss = binary_crossentropy(K.flatten(input_),K.flatten(decoder_hidden4))
         reconstruction_loss *= self.image_size * self.image_size * self.input_shape[2]
+
         kl_loss = 1 + z_std_sq_log - K.square(z_mean) - K.exp(z_std_sq_log)
         kl_loss = K.sum(kl_loss, axis=-1)
         kl_loss *= -0.5
@@ -155,11 +163,12 @@ class SVHNGenerator():
         self.VAE.add_loss(vae_loss)
         self.VAE.compile(optimizer='rmsprop')
         
-        # train the autoencoder
         
-        vae.fit(x_train,epochs=self.epochs,batch_size=self.batch_size,validation_data=(x_test, None))
+        # train the autoencoder
+        embed()
+        vae.fit(x_train,epochs=self.epochs,batch_size=self.batch_size)#,validation_data=(x_test, None))
         plot_model(vae, to_file='vae_cnn.png', show_shapes=True)
-        vae.save_weights('vae_customtrained_svhn.h5')
+        vae.save_weights('vae_customtrained_svhn_extra_im.h5')
         vae.summary()
 
 
