@@ -15,7 +15,7 @@ conda create --name py37 python=3.7
 - NVIDIA GPU + CUDA CuDNN
 - Pytorch
 
-###Dependencies
+### Dependencies
 ```
 pip install -r requirements.txt
 ```
