@@ -1,4 +1,2 @@
-gan_train/train
-gan_train/*.mat
-gan_train/extra
-gan_train/vae_customtrained_svhn.h5
+gan_train/data
+gan_train/results
