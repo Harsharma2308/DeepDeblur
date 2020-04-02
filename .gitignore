@@ -1,9 +1,2 @@
-<<<<<<< HEAD
-gan_train/data
-gan_train/results
-=======
-gan_train/train
-gan_train/*.mat
-gan_train/extra
-gan_train/vae_customtrained_svhn.h5
->>>>>>> eee954a468c7ca7a91ee2d1b0fbace52f9188f0f
+gan_train/data/*
+gan_train/results/*
