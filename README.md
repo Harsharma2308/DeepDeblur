@@ -10,12 +10,18 @@ git clone --recurse-submodules https://github.com/Harsharma2308/DeepDeblur.git
 conda create --name py37 python=3.7
 ```
 
+
 ### Prerequisites
 - NVIDIA GPU + CUDA CuDNN
 - Pytorch
 
+### Dependencies
+```
+pip install -r requirements.txt
+```
 
-## Training GANs
+
+## Training Generators
 ```
 cd gan_train
 ```
@@ -26,7 +32,6 @@ pip install -r requirements.txt
 
 ### Download SVHN train dataset 
 ```
-wget http://ufldl.stanford.edu/housenumbers/train.tar.gz
-tar -zxvf train.tar.gz
-rm -rf train.tar.gz
+cd data
+wget http://ufldl.stanford.edu/housenumbers/train_32x32.mat
 ```
