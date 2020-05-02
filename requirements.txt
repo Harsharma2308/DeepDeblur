@@ -7,7 +7,7 @@ joblib
 albumentations
 scikit-image
 tqdm
-glog
+glob
 tensorboardx
 fire
 # this file is not ready yet

@@ -1,6 +1,9 @@
 # DeepDeblur
 
 ## Make sure to clone with submodules
+This is a repository for the 10701 project "Blur Kernel Estimation and Tracking via GANs". The
+
+## Make sure to clone with submodules
 ```
 git clone --recurse-submodules https://github.com/Harsharma2308/DeepDeblur.git
 ```
@@ -56,4 +59,10 @@ wget http://ufldl.stanford.edu/housenumbers/train_32x32.mat
 ```
 cd Blind-Image-Deconvolution-using-Deep-Generative-Priors/blur_data_generation
 matlab -nodisplay -nodesktop -r "run blur_data_generate.m"
+
+### Hyper parameters used
 ```
+REGULARIZORS = [0.01 , 0.01]
+alpha 		= 1.0 (for Algorithm 2)
+NOISE_STD       = 0.01
+STEPS           = 6000
