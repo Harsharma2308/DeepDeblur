@@ -1,4 +1,5 @@
 import numpy as np
+from keras.utils import plot_model
 from scipy.io import loadmat
 import keras
 import keras.backend as K
@@ -7,10 +8,11 @@ from keras.layers import Conv2D, Conv2DTranspose, Reshape, Flatten
 from keras.models import Sequential
 from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
+from IPython import embed
 import matplotlib.pyplot as plt
 
-train_data = loadmat('train_32x32.mat')
-test_data  = loadmat('test_32x32.mat')
+train_data = loadmat('../data/train_32x32.mat')
+test_data  = loadmat('../data/test_32x32.mat')
 
 X_train, y_train = train_data['X'], train_data['y']
 X_test,  y_test  = test_data['X'],  test_data['y']
@@ -80,18 +82,14 @@ def make_DCGAN(sample_size,
                leaky_alpha):
     # clear any session data
     K.clear_session()
-    
     # generator
     generator = make_generator(sample_size, leaky_alpha)
-
     # discriminator
     discriminator = make_discriminator(leaky_alpha)
     discriminator.compile(optimizer=Adam(lr=d_learning_rate, beta_1=d_beta_1), loss='binary_crossentropy')
-    
     # GAN
     gan = Sequential([generator, discriminator])
     gan.compile(optimizer=Adam(lr=g_learning_rate, beta_1=g_beta_1), loss='binary_crossentropy')
-    
     return gan, generator, discriminator
 
 
@@ -110,7 +108,6 @@ def make_labels(size):
 
 def show_losses(losses):
     losses = np.array(losses)
-    
     fig, ax = plt.subplots()
     plt.plot(losses.T[0], label='Discriminator')
     plt.plot(losses.T[1], label='Generator')
@@ -131,7 +128,8 @@ def show_images(generated_images):
         plt.xticks([])
         plt.yticks([])
     plt.tight_layout()
-    plt.show()
+    #plt.show()
+    plt.savefig("sampledimages_gan.png")
 
 
 def train(
@@ -204,4 +202,19 @@ def train(
     generator.save_weights('gan_hans_svhn_extra.h5')
     return generator
 
-train(g_learning_rate=0.0001, g_beta_1=0.5, d_learning_rate=0.001, d_beta_1=0.5, leaky_alpha=0.2)
+#train(g_learning_rate=0.0001, g_beta_1=0.5, d_learning_rate=0.001, d_beta_1=0.5, leaky_alpha=0.2)
+
+if __name__ == "__main__":
+    gan, generator, discriminator = make_DCGAN(
+        100, 
+        0.0001, 
+        0.5,
+        0.001,
+        0.5,
+        0.2)
+    generator.load_weights('../model_weights/gan_hans_svhn_extra.h5')
+    embed()
+    plot_model(gan,to_file='gan_architecture.png', show_layer_names=True)
+    plot_model(generator,to_file='gangen_architecture.png', show_layer_names=True)
+    plot_model(discriminator,to_file='gandisc_architecture.png', show_layer_names=True)
+    show_images(generator.predict(make_latent_samples(80, 100)))

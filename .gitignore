@@ -1,2 +1,4 @@
 gan_train/data/*
 gan_train/results/*
+blurred_sharp
+

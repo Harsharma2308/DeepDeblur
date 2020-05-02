@@ -24,7 +24,7 @@ class SVHNGenerator():
         return img_arr
 
     def data_loader_mat(self):
-        data='train_32x32.mat'
+        data='../data/train_32x32.mat'
         data_dict=loadmat(data)
         x_train=data_dict['X']
         x_train=np.moveaxis(x_train, -1, 0)
@@ -165,7 +165,7 @@ class SVHNGenerator():
         
         
         # train the autoencoder
-        embed()
+        # embed()
         vae.fit(x_train,epochs=self.epochs,batch_size=self.batch_size)#,validation_data=(x_test, None))
         plot_model(vae, to_file='vae_cnn.png', show_shapes=True)
         vae.save_weights('vae_customtrained_svhn_extra_im.h5')
@@ -207,9 +207,6 @@ class SVHNGenerator():
     
     def GetModels(self):
         return self.VAE, self.Encoder, self.Decoder
-
-
-
 
 
 if __name__ == "__main__":
